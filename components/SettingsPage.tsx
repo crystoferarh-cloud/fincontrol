@@ -3,7 +3,12 @@ import React from 'react';
 import { Card } from './Card';
 import { BellIcon, HomeIcon } from './icons';
 
-export const SettingsPage: React.FC = () => {
+interface SettingsPageProps {
+  areNotificationsEnabled: boolean;
+  onToggleNotifications: () => void;
+}
+
+export const SettingsPage: React.FC<SettingsPageProps> = ({ areNotificationsEnabled, onToggleNotifications }) => {
   return (
     <div className="space-y-6">
       <Card title="Configurações">
@@ -12,7 +17,7 @@ export const SettingsPage: React.FC = () => {
         </p>
       </Card>
 
-      <Card title="Preferências (Em Breve)">
+      <Card title="Preferências">
         <ul className="space-y-4">
           <li className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">
             <div className="flex items-center">
@@ -20,8 +25,13 @@ export const SettingsPage: React.FC = () => {
               <span>Notificações de Contas a Pagar</span>
             </div>
             <label className="inline-flex items-center cursor-pointer">
-              <input type="checkbox" value="" className="sr-only peer" disabled/>
-              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <input 
+                type="checkbox" 
+                checked={areNotificationsEnabled}
+                onChange={onToggleNotifications}
+                className="sr-only peer"
+              />
+              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 dark:peer-focus:ring-primary-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
             </label>
           </li>
           <li className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700/50">

@@ -75,7 +75,7 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({ onClos
             </div>
             <div>
               <label htmlFor="amount" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Valor (R$)</label>
-              <input type="number" id="amount" value={amount} onChange={e => setAmount(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="100.00" required />
+              <input type="number" step="0.01" id="amount" value={amount} onChange={e => setAmount(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="100.00" required />
             </div>
             <div>
               <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Categoria</label>

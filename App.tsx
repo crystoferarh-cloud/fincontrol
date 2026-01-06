@@ -24,6 +24,7 @@ export default function App() {
   const [goals, setGoals] = useState<Goal[]>(mockGoals);
   const [bills, setBills] = useState<Bill[]>(mockBills);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [areNotificationsEnabled, setAreNotificationsEnabled] = useState(true);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -33,6 +34,10 @@ export default function App() {
     } else {
       document.documentElement.classList.remove('dark');
     }
+  };
+
+  const handleToggleNotifications = () => {
+    setAreNotificationsEnabled(prev => !prev);
   };
 
   const handleAddTransaction = useCallback((newTransaction: Omit<Transaction, 'id'>) => {
@@ -65,13 +70,13 @@ export default function App() {
       case 'budgets':
         return <BudgetsPage budgets={budgets} transactions={transactions} />;
       case 'reports':
-        return <ReportsPage />;
+        return <ReportsPage transactions={transactions} />;
       case 'settings':
-        return <SettingsPage />;
+        return <SettingsPage areNotificationsEnabled={areNotificationsEnabled} onToggleNotifications={handleToggleNotifications} />;
       default:
         return <Dashboard transactions={transactions} budgets={budgets} goals={goals} />;
     }
-  }, [currentView, transactions, budgets, goals]);
+  }, [currentView, transactions, budgets, goals, areNotificationsEnabled]);
 
   if (!isAuthenticated) {
     return <LoginPage onLogin={handleLogin} />;
@@ -95,6 +100,7 @@ export default function App() {
           theme={theme}
           bills={bills}
           onMarkBillAsPaid={handleMarkBillAsPaid}
+          areNotificationsEnabled={areNotificationsEnabled}
         />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
           {content}

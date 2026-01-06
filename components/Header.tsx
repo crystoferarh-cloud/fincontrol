@@ -11,9 +11,10 @@ interface HeaderProps {
   theme: 'light' | 'dark';
   bills: Bill[];
   onMarkBillAsPaid: (billId: string) => void;
+  areNotificationsEnabled: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ toggleSidebar, onAddTransaction, toggleTheme, theme, bills, onMarkBillAsPaid }) => {
+export const Header: React.FC<HeaderProps> = ({ toggleSidebar, onAddTransaction, toggleTheme, theme, bills, onMarkBillAsPaid, areNotificationsEnabled }) => {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const notificationsRef = useRef<HTMLDivElement>(null);
 
@@ -68,25 +69,27 @@ export const Header: React.FC<HeaderProps> = ({ toggleSidebar, onAddTransaction,
                {theme === 'light' ? <MoonIcon className="w-6 h-6" /> : <SunIcon className="w-6 h-6" />}
             </button>
             
-            <div className="relative" ref={notificationsRef}>
-              <button
-                type="button"
-                onClick={() => setIsNotificationsOpen(prev => !prev)}
-                className="relative p-2 text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-              >
-                  <BellIcon className="w-6 h-6"/>
-                  {pendingBillsCount > 0 && (
-                    <span className="absolute top-1 right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full dark:border-gray-800">{pendingBillsCount}</span>
-                  )}
-              </button>
-              {isNotificationsOpen && (
-                <NotificationsPopover
-                  bills={pendingBills}
-                  onMarkAsPaid={onMarkBillAsPaid}
-                  onClose={() => setIsNotificationsOpen(false)}
-                />
-              )}
-            </div>
+            {areNotificationsEnabled && (
+              <div className="relative" ref={notificationsRef}>
+                <button
+                  type="button"
+                  onClick={() => setIsNotificationsOpen(prev => !prev)}
+                  className="relative p-2 text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                >
+                    <BellIcon className="w-6 h-6"/>
+                    {pendingBillsCount > 0 && (
+                      <span className="absolute top-1 right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full dark:border-gray-800">{pendingBillsCount}</span>
+                    )}
+                </button>
+                {isNotificationsOpen && (
+                  <NotificationsPopover
+                    bills={pendingBills}
+                    onMarkAsPaid={onMarkBillAsPaid}
+                    onClose={() => setIsNotificationsOpen(false)}
+                  />
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
