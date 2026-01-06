@@ -1,3 +1,4 @@
+
 // Fix: Import ComponentType from react to resolve the namespace error.
 import type { ComponentType } from 'react';
 
@@ -29,4 +30,12 @@ export interface Goal {
   name: string;
   targetAmount: number;
   currentAmount: number;
+}
+
+export interface Bill {
+  id: string;
+  name: string;
+  amount: number;
+  dueDate: string; // "YYYY-MM-DD"
+  paid: boolean;
 }
