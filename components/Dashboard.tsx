@@ -3,12 +3,13 @@ import React, { useMemo } from 'react';
 import { Card } from './Card';
 import type { Transaction, Budget, Goal } from '../types';
 import { mockCategories } from '../constants';
-import { TrendingUpIcon, DollarSignIcon } from './icons';
+import { TrendingUpIcon, DollarSignIcon, TrashIcon } from './icons';
 
 interface DashboardProps {
   transactions: Transaction[];
   budgets: Budget[];
   goals: Goal[];
+  onDeleteTransaction: (id: string) => void;
 }
 
 const formatCurrency = (value: number) => {
@@ -20,7 +21,7 @@ const getCategoryIcon = (categoryName: string) => {
   return category ? category.icon : DollarSignIcon;
 };
 
-export const Dashboard: React.FC<DashboardProps> = ({ transactions, budgets, goals }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ transactions, budgets, goals, onDeleteTransaction }) => {
   const { totalIncome, totalExpenses, balance } = useMemo(() => {
     const totalIncome = transactions
       .filter(t => t.type === 'income')
@@ -115,8 +116,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ transactions, budgets, goa
                     <p className="text-sm font-medium text-gray-900 truncate dark:text-white">{t.description}</p>
                     <p className="text-sm text-gray-500 truncate dark:text-gray-400">{t.category}</p>
                   </div>
-                  <div className={`inline-flex items-center text-base font-semibold ${t.type === 'income' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
-                    {t.type === 'income' ? '+' : '-'} {formatCurrency(t.amount)}
+                  <div className="flex items-center">
+                    <div className={`inline-flex items-center text-base font-semibold ${t.type === 'income' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                      {t.type === 'income' ? '+' : '-'} {formatCurrency(t.amount)}
+                    </div>
+                    <button onClick={() => onDeleteTransaction(t.id)} className="ml-4 p-1 text-gray-400 hover:text-red-500 dark:hover:text-red-500 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700" aria-label="Excluir transação">
+                      <TrashIcon className="w-5 h-5" />
+                    </button>
                   </div>
                 </div>
               </li>

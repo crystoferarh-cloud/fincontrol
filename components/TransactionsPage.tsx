@@ -3,10 +3,11 @@ import React from 'react';
 import { Card } from './Card';
 import type { Transaction } from '../types';
 import { mockCategories } from '../constants';
-import { DollarSignIcon } from './icons';
+import { DollarSignIcon, TrashIcon } from './icons';
 
 interface TransactionsPageProps {
   transactions: Transaction[];
+  onDeleteTransaction: (id: string) => void;
 }
 
 const formatCurrency = (value: number) => {
@@ -23,7 +24,7 @@ const getCategoryIcon = (categoryName: string) => {
   return category ? category.icon : DollarSignIcon;
 };
 
-export const TransactionsPage: React.FC<TransactionsPageProps> = ({ transactions }) => {
+export const TransactionsPage: React.FC<TransactionsPageProps> = ({ transactions, onDeleteTransaction }) => {
   return (
     <Card title="Todas as Transações">
       <div className="overflow-x-auto">
@@ -34,6 +35,7 @@ export const TransactionsPage: React.FC<TransactionsPageProps> = ({ transactions
               <th scope="col" className="px-6 py-3">Categoria</th>
               <th scope="col" className="px-6 py-3">Data</th>
               <th scope="col" className="px-6 py-3">Valor</th>
+              <th scope="col" className="px-6 py-3 text-center">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -51,6 +53,15 @@ export const TransactionsPage: React.FC<TransactionsPageProps> = ({ transactions
                   <td className="px-6 py-4">{formatDate(t.date)}</td>
                   <td className={`px-6 py-4 font-semibold ${t.type === 'income' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                     {formatCurrency(t.amount)}
+                  </td>
+                   <td className="px-6 py-4 text-center">
+                    <button 
+                      onClick={() => onDeleteTransaction(t.id)} 
+                      className="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-500"
+                      aria-label="Excluir transação"
+                    >
+                        <TrashIcon className="w-5 h-5" />
+                    </button>
                   </td>
                 </tr>
               );

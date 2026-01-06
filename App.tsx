@@ -44,6 +44,12 @@ export default function App() {
     setTransactions(prev => [{ ...newTransaction, id: Date.now().toString() }, ...prev]);
     setIsModalOpen(false);
   }, []);
+  
+  const handleDeleteTransaction = (transactionId: string) => {
+    if (window.confirm('Tem certeza que deseja excluir esta transação?')) {
+      setTransactions(prev => prev.filter(t => t.id !== transactionId));
+    }
+  };
 
   const handleLogin = () => {
     setIsAuthenticated(true);
@@ -64,9 +70,9 @@ export default function App() {
   const content = useMemo(() => {
     switch (currentView) {
       case 'dashboard':
-        return <Dashboard transactions={transactions} budgets={budgets} goals={goals} />;
+        return <Dashboard transactions={transactions} budgets={budgets} goals={goals} onDeleteTransaction={handleDeleteTransaction} />;
       case 'transactions':
-        return <TransactionsPage transactions={transactions} />;
+        return <TransactionsPage transactions={transactions} onDeleteTransaction={handleDeleteTransaction} />;
       case 'budgets':
         return <BudgetsPage budgets={budgets} transactions={transactions} />;
       case 'reports':
@@ -74,7 +80,7 @@ export default function App() {
       case 'settings':
         return <SettingsPage areNotificationsEnabled={areNotificationsEnabled} onToggleNotifications={handleToggleNotifications} />;
       default:
-        return <Dashboard transactions={transactions} budgets={budgets} goals={goals} />;
+        return <Dashboard transactions={transactions} budgets={budgets} goals={goals} onDeleteTransaction={handleDeleteTransaction} />;
     }
   }, [currentView, transactions, budgets, goals, areNotificationsEnabled]);
 
